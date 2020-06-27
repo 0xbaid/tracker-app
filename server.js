@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 const authRoute = require('./routes/authRoutes');
 const dotenv = require('dotenv').config();
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 5000;
 
@@ -12,15 +13,19 @@ let mongoURI = process.env.MONGOLAB_URI;
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 
 mongoose.connection.on('connected', () => console.log('mongoDB Connected!'));
 
-mongoose.connection.on('error', (err) => console.error('Error connected to mongoDB',err) )
+mongoose.connection.on('error', (err) =>
+  console.error('Error connected to mongoDB', err)
+);
 
+//parsing data to json
+app.use(bodyParser.json());
 //define routes
-app.use(authRoute)
+app.use(authRoute);
 
 app.get('/', (req, res) => {
   res.send('Api is running');

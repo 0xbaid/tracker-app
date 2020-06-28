@@ -4,6 +4,7 @@ const app = express();
 const authRoute = require('./routes/authRoutes');
 const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
+const auth = require('./middleware/auth')
 
 const PORT = process.env.PORT || 5000;
 
@@ -27,8 +28,8 @@ app.use(bodyParser.json());
 //define routes
 app.use(authRoute);
 
-app.get('/', (req, res) => {
-  res.send('Api is running');
+app.get('/', auth, (req, res) => {
+  res.send(`Your email: ${req.user.email}`);
 });
 
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const authRoute = require('./routes/authRoutes');
+const trackRoute = require('./routes/trackRoutes');
 const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
 const auth = require('./middleware/auth')
@@ -27,6 +28,7 @@ mongoose.connection.on('error', (err) =>
 app.use(bodyParser.json());
 //define routes
 app.use(authRoute);
+app.use(trackRoute);
 
 app.get('/', auth, (req, res) => {
   res.send(`Your email: ${req.user.email}`);
